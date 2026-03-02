@@ -15,7 +15,7 @@ def f(u: np.ndarray, alpha):
 
 
 
-NA = 5
+NA = 32
 
 spiny = [0]*(NA-1)
 spiny[0:2] = [2, -1]
@@ -32,16 +32,30 @@ eigvecs = eigvecs[:,args]
 # initial conditions
 Nt = 50000
 delta = np.sqrt(1/8)
-u = np.sqrt(2/NA)*np.sin(np.pi*np.arange(1, NA)/5)
-v = np.zeros(NA)
+T = np.linspace(0, Nt*delta, Nt)
+u = 4*np.sqrt(2/NA)*np.sin(np.pi*np.arange(1, NA)/NA)
+v = np.zeros(NA-1)
+E_0 = np.zeros(Nt)
 
 for i in range(Nt):
-    F1 = f(u, delta)
+    F1 = f(u, 0.25)
+
+    #calculate energy at timestep
+    xi_0 = np.dot(eigvecs[0], u)
+    xip_0 = np.dot(eigvecs[0], v)
+    E_0[i] = 0.5*(xip_0 ** 2 + (xi_0 ** 2) * (eigvals[0] ** 2))
+
     u = u + v*delta + 0.5*F1*delta**2
-    F2 = f(u, delta)
+    F2 = f(u, 0.25)
     v = v + 0.5*delta*(F2+F1)
 
-print(eigvecs)
+
+plt.plot((T*np.sqrt(eigvals[0]))/(2*np.pi), 100*E_0, label='E0')
+
+plt.xlim(0, 160)
+
+plt.show()
+
 
 
 
