@@ -37,7 +37,7 @@ v = np.zeros(NA)
 
 for i in range(Nt):
     F1 = f(u, delta)
-    u = u + v*delta + 0.5*F*delta**2
+    u = u + v*delta + 0.5*F1*delta**2
     F2 = f(u, delta)
     v = v + 0.5*delta*(F2+F1)
 
