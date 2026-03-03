@@ -40,6 +40,7 @@ T = np.zeros(Nt, dtype=np.float64)
 u = 4*eigvecs[0]
 v = np.zeros(NA-1, dtype=np.float64)
 E = np.zeros((4, Nt), dtype=np.float64)
+a = 0.25
 
 plt.figure()
 for i in range(4):
@@ -47,7 +48,7 @@ for i in range(4):
 plt.title("Initial conditions")
 
 for i in range(Nt):
-    F1 = f(u, 0.25)
+    F1 = f(u, a)
 
     # wanted to do this with no loops but ran into precision errors (I think)
     for j in range(4):
@@ -62,7 +63,7 @@ for i in range(Nt):
     T[i] = i*delta*np.sqrt(eigvals[0])/(2*np.pi)
 
     u = u + v*delta + 0.5*F1*(delta**2)
-    F2 = f(u, 0.25)
+    F2 = f(u, a)
     v = v + 0.5*delta*(F2+F1)
 
 
